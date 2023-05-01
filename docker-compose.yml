@@ -1,0 +1,43 @@
+version: "3.7"
+
+x-build: &default-build
+  context: .
+  dockerfile: Docker/dev/Dockerfile
+
+services:
+  lagoa-app:
+    build: *default-build
+    command: uvicorn Lagoa.main:app --host 0.0.0.0 --port 8000
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      - DEBUG=True
+    ports:
+      - 8000:8000
+    networks:
+      - back
+
+  lint:
+    container_name: lagoa-lint
+    build: *default-build
+    working_dir: /app
+    volumes:
+      - .:/app
+    networks:
+      - back
+    command: ["./scripts/start-lint.sh"]
+
+  tests:
+    container_name: lagoa-tests
+    build: *default-build
+    env_file: .env
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: ["pytest","tests"]
+
+networks:
+  back:
+    name: back-lagoa

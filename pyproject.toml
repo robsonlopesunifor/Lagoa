@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "lagoa"
+version = "0.1.0"
+description = ""
+authors = ["Robson Lopes <robson.lopes@edu.unifor.br>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.95.1"
+httpx = "^0.24.0"
+sqlalchemy = "1.4.46"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+isort = "^5.12.0"
+black = "^23.3.0"
+pycodestyle = "^2.10.0"
+flake8 = "^6.0.0"
+mypy = "^1.2.0"
+pre-commit = "^3.2.2"
+
+
+[tool.isort]
+force_single_line = true
+line_length = 120
+skip_glob = "**/migrations/*.py"
+lines_between_types = 1
+known_fastapi = "fastapi"
+known_third_party = ["urllib3", "pytest"]
+sections = ["FUTURE", "STDLIB", "FASTAPI", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+
+[tool.black]
+line-length = 120
+target_version = ['py39']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | migrations
+  )/
+)
+'''
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
