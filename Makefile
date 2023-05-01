@@ -14,7 +14,7 @@ down:
 	docker-compose down
 
 test:
-	docker-compose run lagoa-app pytest tests
+	docker-compose run lagoa-app pytest
 
 lint:
 	@echo "--> Lint"
