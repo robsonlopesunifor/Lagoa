@@ -5,11 +5,27 @@ x-build: &default-build
   dockerfile: Docker/dev/Dockerfile
 
 services:
+  postgres:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - banco
+
   lagoa-app:
     build: *default-build
     command: uvicorn Lagoa.main:app --host 0.0.0.0 --port 8000
     volumes:
       - .:/app
+    depends_on:
+      - postgres
     env_file:
       - .env
     environment:
@@ -18,7 +34,11 @@ services:
       - 8000:8000
     networks:
       - back
+      - banco
 
 networks:
+  banco:
   back:
-    name: back-lagoa
+
+volumes:
+  postgres-db:
